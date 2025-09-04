@@ -24,7 +24,7 @@ jobs:
       - name: Build (x86_64)
         shell: msys2 {0}
         run: |
-          gcc main.c -O2 -std=c11 -mwindows -static -I. \
+          gcc main.cpp -O2 -std=c11 -mwindows -static -I. \
             -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion \
             -o webview.exe
 
