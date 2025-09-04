@@ -1,0 +1,27 @@
+name: macOS x86_64
+
+on: 
+  push: 
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install pkg-config
+
+      - name: Build
+        run: g++ main.cpp -O2 -std=c++14 -arch x86_64 -I. -framework Cocoa -framework WebKit -o webview
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webview
+          path: webview
