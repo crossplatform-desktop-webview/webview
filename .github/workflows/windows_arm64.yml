@@ -1,0 +1,32 @@
+name: Windows ARM64
+
+on: 
+  push: 
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-11-arm
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2 (MINGW64 ARM64)
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-aarch64-gcc
+            mingw-w64-aarch64-pkg-config
+
+      - name: Build
+        shell: msys2 {0}
+        run: aarch64-w64-mingw32-g++ main.cpp -O2 -std=c++14 -static -mwindows -I. -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion -o webview.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webview
+          path: webview.exe
