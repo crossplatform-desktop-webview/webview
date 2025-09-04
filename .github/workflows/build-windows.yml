@@ -1,0 +1,59 @@
+name: Build Windows x86_64 & ARM64
+
+on: 
+  push: 
+    branches: [ "main" ]
+
+jobs:
+  build-windows-x86_64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2 (MINGW64)
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-pkg-config
+
+      - name: Build (x86_64)
+        shell: msys2 {0}
+        run: g++ main.cpp -O2 -std=c++14 -static -mwindows -I. \
+          -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion \
+          -o webview-x86_64.exe
+
+      - name: Upload artifact (x86_64)
+        uses: actions/upload-artifact@v4
+        with:
+          name: webview-x86_64
+          path: webview-x86_64.exe
+
+  build-windows-arm64:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Download LLVM-mingw (ARM64)
+        run: |
+          curl -LO https://github.com/mstorsjo/llvm-mingw/releases/download/2024-05-10/llvm-mingw-20240510-ucrt-x86_64.zip
+          tar -xf llvm-mingw-20240510-ucrt-x86_64.zip
+
+      - name: Build (ARM64)
+        run: |
+          set PATH=%CD%\llvm-mingw-20240510-ucrt-x86_64\bin;%PATH%
+          aarch64-w64-mingw32-g++ main.cpp -O2 -std=c++14 -static -mwindows -I. ^
+            -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion ^
+            -o webview-arm64.exe
+
+      - name: Upload artifact (ARM64)
+        uses: actions/upload-artifact@v4
+        with:
+          name: webview-arm64
+          path: webview-arm64.exe
