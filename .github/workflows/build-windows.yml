@@ -9,21 +9,29 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        arch: [x64, arm64]
+        arch: [x86_64, aarch64] # x64 и ARM64
 
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Set up MinGW for ${{ matrix.arch }}
-        uses: egor-tensin/setup-mingw@v2
+      # Устанавливаем MSYS2 и нужный тулчейн
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
         with:
-          platform: ${{ matrix.arch }}
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-${{ matrix.arch }}-gcc
+            mingw-w64-${{ matrix.arch }}-pkg-config
+            mingw-w64-${{ matrix.arch }}-headers
+            mingw-w64-${{ matrix.arch }}-crt
+            mingw-w64-${{ matrix.arch }}-winpthreads
 
-      - name: Build for ${{ matrix.arch }}
-        shell: bash
+      - name: Build (${{ matrix.arch }})
+        shell: msys2 {0}
         run: |
-          gcc main.c -O2 -std=c11 -mwindows -static -I. \
+          ${{ matrix.arch }}-w64-mingw32-gcc main.c -O2 -std=c11 -mwindows -static -I. \
             -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion \
             -o app-${{ matrix.arch }}.exe
 
