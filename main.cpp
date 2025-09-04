@@ -1,4 +1,4 @@
-#include "webview/webview.h"
+#include "lib/webview.h"
 
 int main() {
     webview::webview w(false, nullptr);
