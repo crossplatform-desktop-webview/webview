@@ -1,4 +1,4 @@
-name: Build Windows x86_64
+name: Windows x86_64
 
 on: 
   push: 
@@ -21,7 +21,7 @@ jobs:
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-pkg-config
 
-      - name: Build (x86_64)
+      - name: Build
         shell: msys2 {0}
         run: g++ main.cpp -O2 -std=c++14 -static -mwindows -I. -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion -o webview.exe
 
