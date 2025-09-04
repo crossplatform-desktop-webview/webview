@@ -23,10 +23,7 @@ jobs:
 
       - name: Build (x86_64)
         shell: msys2 {0}
-        run: |
-          gcc main.cpp -O2 -std=c11 -mwindows -static -I. \
-            -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion \
-            -o webview.exe
+        run: gcc main.cpp -O2 -std=c++14 -static -mwindows -I. -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion -o webview.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
