@@ -1,0 +1,28 @@
+name: Linux x86_64
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ pkg-config
+
+      - name: Build
+        run: |
+          g++ main.cpp -O2 -std=c++14 -static -I. -o webview
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: webview
+          path: webview
