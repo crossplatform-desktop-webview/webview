@@ -15,11 +15,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y g++ pkg-config
+          sudo apt-get install -y g++ pkg-config libgtk-3-dev libwebkit2gtk-4.0-dev
 
       - name: Build
-        run: |
-          g++ main.cpp -O2 -std=c++14 -static -I. -o webview
+        run: g++ main.cpp -O2 -std=c++14 -I. $(pkg-config --cflags --libs gtk+-3.0 webkit2gtk-4.0) -o webview
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
