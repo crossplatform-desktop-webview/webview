@@ -12,18 +12,20 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Set up MSYS2 (MINGW64 ARM64)
+      - name: Set up MSYS2 (CLANGARM64)
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: CLANGARM64
           update: true
           install: >-
-            mingw-w64-aarch64-gcc
-            mingw-w64-aarch64-pkg-config
+            mingw-w64-clang-aarch64-toolchain
+            mingw-w64-clang-aarch64-pkg-config
 
       - name: Build
         shell: msys2 {0}
-        run: aarch64-w64-mingw32-g++ main.cpp -O2 -std=c++14 -static -mwindows -I. -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion -o webview.exe
+        run: clang++ main.cpp -O2 -std=c++14 -static -mwindows \
+             -I. -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion \
+             -o webview.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
