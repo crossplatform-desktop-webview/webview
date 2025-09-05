@@ -1,8 +1,8 @@
 name: Windows ARM64
 
-on: 
-  push: 
-    branches: [ "main" ]
+on:
+  push:
+    branches: ["main"]
 
 jobs:
   build:
@@ -23,7 +23,7 @@ jobs:
 
       - name: Build
         shell: msys2 {0}
-        run: clang++ main.cpp -O2 -std=c++14 -static -mwindows -I. -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion -o webview.exe
+        run: clang++ main.cpp -std=c++17 -static -mwindows -I. -ladvapi32 -lole32 -lshell32 -lshlwapi -luser32 -lversion -o webview.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4

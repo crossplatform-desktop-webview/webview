@@ -1,8 +1,8 @@
 name: macOS x86_64
 
-on: 
-  push: 
-    branches: [ "main" ]
+on:
+  push:
+    branches: ["main"]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
           brew install pkg-config
 
       - name: Build
-        run: g++ main.cpp -O2 -std=c++14 -arch x86_64 -I. -framework Cocoa -framework WebKit -o webview
+        run: g++ main.cpp -std=c++17 -arch x86_64 -I. -framework Cocoa -framework WebKit -o webview
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
