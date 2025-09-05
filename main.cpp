@@ -5,6 +5,7 @@
 int main(int argc, char* argv[]) {
     std::string title;
     std::string url;
+    std::string icon_path;
     int size_hint = 0;
     int width = 0, height = 0;
 
@@ -14,6 +15,8 @@ int main(int argc, char* argv[]) {
             title = argv[++i];
         } else if (arg == "--url" && i + 1 < argc) {
             url = argv[++i];
+        } else if (arg == "--icon" && i + 1 < argc) {
+            icon_path = argv[++i];
         } else if (arg == "--size" && i + 1 < argc) {
             size_hint = std::atoi(argv[++i]);
         } else if (arg == "--width" && i + 1 < argc) {
@@ -30,6 +33,9 @@ int main(int argc, char* argv[]) {
     webview::webview w(false, nullptr);
     w.set_title(title);
     w.set_size(width, height, static_cast<webview_hint_t>(size_hint));
+    if (!icon_path.empty()) {
+        w.set_icon(icon_path);
+    }
     w.navigate(url);
     w.run();
     return 0;

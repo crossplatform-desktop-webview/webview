@@ -143,6 +143,8 @@ window.__webview__.onUnbind(" +
     return res;
   }
 
+  noresult set_icon(const std::string &icon_path) { return set_icon_impl(icon_path); }
+
   noresult set_html(const std::string &html) { return set_html_impl(html); }
 
   noresult init(const std::string &js) {
@@ -163,6 +165,7 @@ protected:
   virtual noresult set_title_impl(const std::string &title) = 0;
   virtual noresult set_size_impl(int width, int height,
                                  webview_hint_t hints) = 0;
+  virtual noresult set_icon_impl(const std::string &icon_path) = 0;
   virtual noresult set_html_impl(const std::string &html) = 0;
   virtual noresult eval_impl(const std::string &js) = 0;
 

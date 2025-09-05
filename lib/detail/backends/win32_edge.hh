@@ -441,6 +441,25 @@ protected:
     return window_show();
   }
 
+  noresult set_icon_impl(const std::string &icon_path) override {
+    if (icon_path.empty()) {
+      return {};
+    }
+    
+    auto wicon_path = widen_string(icon_path);
+    HICON icon = (HICON)LoadImageW(
+        nullptr, wicon_path.c_str(), IMAGE_ICON, 
+        GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), 
+        LR_LOADFROMFILE | LR_DEFAULTCOLOR);
+    
+    if (icon) {
+      SendMessageW(m_window, WM_SETICON, ICON_BIG, (LPARAM)icon);
+      SendMessageW(m_window, WM_SETICON, ICON_SMALL, (LPARAM)icon);
+    }
+    
+    return {};
+  }
+
   noresult navigate_impl(const std::string &url) override {
     auto wurl = widen_string(url);
     m_webview->Navigate(wurl.c_str());

@@ -194,6 +194,21 @@ protected:
     return window_show();
   }
 
+  noresult set_icon_impl(const std::string &icon_path) override {
+    if (icon_path.empty()) {
+      return {};
+    }
+    
+    GError *error = nullptr;
+    GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(icon_path.c_str(), &error);
+    if (pixbuf) {
+      gtk_window_set_icon(GTK_WINDOW(m_window), pixbuf);
+      g_object_unref(pixbuf);
+    }
+    
+    return {};
+  }
+
   noresult navigate_impl(const std::string &url) override {
     webkit_web_view_load_uri(WEBKIT_WEB_VIEW(m_webview), url.c_str());
     return {};

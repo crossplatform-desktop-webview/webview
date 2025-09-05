@@ -145,6 +145,14 @@ WEBVIEW_API webview_error_t webview_set_size(webview_t w, int width, int height,
                                              webview_hint_t hints);
 
 /**
+ * Updates the icon of the native window.
+ *
+ * @param w The webview instance.
+ * @param icon_path Path to the icon file.
+ */
+WEBVIEW_API webview_error_t webview_set_icon(webview_t w, const char *icon_path);
+
+/**
  * Navigates webview to the given URL. URL may be a properly encoded data URI.
  *
  * Example:

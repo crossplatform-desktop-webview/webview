@@ -182,6 +182,14 @@ WEBVIEW_API webview_error_t webview_set_size(webview_t w, int width, int height,
       [=] { return cast_to_webview(w)->set_size(width, height, hints); });
 }
 
+WEBVIEW_API webview_error_t webview_set_icon(webview_t w, const char *icon_path) {
+  using namespace webview::detail;
+  if (!icon_path) {
+    return WEBVIEW_ERROR_INVALID_ARGUMENT;
+  }
+  return api_filter([=] { return cast_to_webview(w)->set_icon(icon_path); });
+}
+
 WEBVIEW_API webview_error_t webview_navigate(webview_t w, const char *url) {
   using namespace webview::detail;
   if (!url) {

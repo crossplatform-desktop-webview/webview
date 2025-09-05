@@ -217,6 +217,23 @@ protected:
 
     return window_show();
   }
+
+  noresult set_icon_impl(const std::string &icon_path) override {
+    if (icon_path.empty()) {
+      return {};
+    }
+    
+    objc::autoreleasepool arp;
+    auto nsstring_path = NSString_stringWithUTF8String(icon_path);
+    auto nsurl = NSURL_fileURLWithPath(nsstring_path);
+    auto nsimage = NSImage_imageWithContentsOfURL(nsurl);
+    
+    if (nsimage) {
+      NSWindow_set_representedURL(m_window, nsurl);
+    }
+    
+    return {};
+  }
   noresult navigate_impl(const std::string &url) override {
     objc::autoreleasepool arp;
 
